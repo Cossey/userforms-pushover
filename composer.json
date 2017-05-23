@@ -1,5 +1,5 @@
 {
-  "name": "sc/userforms-pushover",
+  "name": "stewartcossey/userforms-pushover",
   "description": "Adds Pushover Notification support to UserForms",
   "type": "silverstripe-module",
   "homepage": "http://github.com/Cossey/userforms-pushover",

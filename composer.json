@@ -1,12 +1,12 @@
 {
-  "name": "cossey/userforms-pushover",
+  "name": "sc/userforms-pushover",
   "description": "Adds Pushover Notification support to UserForms",
   "type": "silverstripe-module",
   "homepage": "http://github.com/Cossey/userforms-pushover",
   "keywords": ["silverstripe", "userforms", "pushover"],
   "license": "None",
   "authors": [
-    {"name": "Stewart Cossey","email": "killerofshadows@gmail.com"}
+    {"name": "Stewart Cossey", "email": "killerofshadows@gmail.com"}
   ],
   "support": {
     "issues": "http://github.com/Cossey/userforms-pushover/issues"

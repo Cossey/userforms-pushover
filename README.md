@@ -2,7 +2,7 @@
 Enables Pushover.net Support in UserForms module.
 
 ## Requirements
-UserForms Module.
+The SilverStripe UserForms Module.
 
 ## Installation
 

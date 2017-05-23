@@ -1,0 +1,25 @@
+{
+  "name": "stewartcossey/userdefinedforms-pushover",
+  "description": "Adds Pushover Notification support to UserForms",
+  "type": "silverstripe-module",
+  "homepage": "http://github.com/stewartcossey/userdefinedforms-pushover",
+  "keywords": ["silverstripe", "userdefinedforms", "pushover"],
+  "license": "None",
+  "authors": [
+    {"name": "Stewart Cossey","email": "killerofshadows@gmail.com"}
+  ],
+  "support": {
+    "issues": "http://github.com/stewartcossey/userdefinedforms-pushover/issues"
+  },
+  "require": {
+    "silverstripe/cms": "~3.1",
+    "silverstripe/framework": "~3.1"
+  },
+  "extra": {
+    "installer-name": "module-name",
+    "screenshots": [
+      "relative/path/screenshot1.png",
+      "http://myhost.com/screenshot2.png"
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+---
+Name: userformspushover
+Only:
+  ModuleExists: userforms
+---
+UserDefinedForm:
+  extensions:
+    - UserFormsPushoverExtension

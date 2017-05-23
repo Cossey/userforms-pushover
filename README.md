@@ -10,4 +10,4 @@ UserForms Module.
 You will need to run `dev/build?flush=all` after installing.
 
 ## Screenshots
-![Screenshot](https://github.com/Cossey/userforms-pushover/screenshot-recp.png)
+![Screenshot](https://github.com/Cossey/userforms-pushover/blob/master/screenshot-recp.png)

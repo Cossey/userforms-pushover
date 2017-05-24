@@ -14,8 +14,20 @@ class PushoverEndpoint extends DataObject {
         'DeviceNames' => 'Devices',
 		'Priority' => 'Priority',
     );
+	
+  public function getTitle()
+  {
+        if ($this->DeviceNames) {
+            return $this->UserKey . ": " . $this->DeviceNames;
+        }
+        if ($this->UserKey) {
+            return $this->UserKey;
+        }
+        return parent::getTitle();
+  }
   
-  public function getCMSFields() {
+  public function getCMSFields() 
+  {
         $fields = FieldList::create(
             TextField::create('UserKey','User Key'),
             $DevNames = TextField::create('DeviceNames','Devices'),

@@ -14,12 +14,12 @@ You will need to run `dev/build?flush=all` after installing this module.
 Like the UserForm emails, Pushover messages utilize templates. Templates are stored in `userforms-pushover/templates/pushover`
 
 The following values are available in the Pushover Template:
-Name       |Description
------------|------------------------------------------------
-$Fields    |User Form Fields
-$PageTitle |Title of Page where Form was Submitted
-$UserKey   |The Pushover User/Group Key used to send message
-$Devices   |The Names of Devices that were sent messages
+Name        | Description
+----------- | ------------------------------------------------
+$Fields     | User Form Fields
+$PageTitle  | Title of Page where Form was Submitted
+$UserKey    | The Pushover User/Group Key used to send message
+$Devices    | The Names of Devices that were sent messages
 
 ## Screenshots
 ![Screenshot](https://github.com/Cossey/userforms-pushover/blob/master/screenshot-recp.png)

@@ -14,6 +14,7 @@ You will need to run `dev/build?flush=all` after installing this module.
 Like the UserForm emails, Pushover messages utilize templates. Templates are stored in `userforms-pushover/templates/pushover`
 
 The following values are available in the Pushover Template:
+
 Name        | Description
 ----------- | ------------------------------------------------
 $Fields     | User Form Fields

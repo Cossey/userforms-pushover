@@ -17,10 +17,10 @@
 	"silverstripe/userforms": "*"
   },
   "extra": {
-    "installer-name": "module-name",
+    "installer-name": "userforms-pushover",
     "screenshots": [
-      "relative/path/screenshot1.png",
-      "http://myhost.com/screenshot2.png"
+      "https://github.com/Cossey/userforms-pushover/blob/master/screenshot-recp.png",
+      "https://github.com/Cossey/userforms-pushover/blob/master/screenshot-pousers.png"
     ]
   }
 }

@@ -6,3 +6,6 @@ Only:
 UserDefinedForm:
   extensions:
     - UserFormsPushoverExtension
+SubmittedForm:
+  extensions:
+    - SubmittedFormPushoverExtension

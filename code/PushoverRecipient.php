@@ -6,7 +6,7 @@
 *
 * Adds Pushover Notification Endpoints
 */
-class PushoverEndpoint extends DataObject {
+class PushoverRecipient extends DataObject {
 
 	private static $db = array(
 		'UserKey' => 'Varchar',
@@ -14,7 +14,29 @@ class PushoverEndpoint extends DataObject {
 		'Priority' => "Enum('Lowest,Low,Normal,High,Emergency','Normal')",
 		'PoTemplate' => 'Varchar',
 	);
-
+	
+	public function populateDefaults() {
+		$this->Priority = 'Normal';
+		$this->PoTemplate = 'SubmittedFormPushover';
+		
+		switch (strtolower(Config::inst()->get('Pushover', 'priority')))
+		{
+			case 'lowest':
+			case 'low':
+			case 'normal':
+			case 'high':
+			case 'emergency':
+				$this->Priority = ucfirst(strtolower(Config::inst()->get('Pushover', 'priority')));
+				break;
+		}
+		
+		if (Config::inst()->get('Pushover', 'default_template'))
+		{
+			$this->PoTemplate = Config::inst()->get('Pushover', 'default_template');
+		}
+		
+	}
+	
 	private static $summary_fields = array (
 		'UserKey' => 'User Key',
 		'DeviceNames' => 'Devices',

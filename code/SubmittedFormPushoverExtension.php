@@ -17,11 +17,12 @@ class SubmittedFormPushoverExtension extends DataExtension
 		if(
 			$page->exists()
 			&& $this->owner->Values()->exists()
+			&& Config::inst()->get('Pushover', 'application_key')
 		)
 		{
 			$fields = $this->owner->Values();
 
-			foreach($page->PushoverEndpoints() as $poend) {
+			foreach($page->PushoverRecipients() as $poend) {
 				//Build Fields and Data for Pushover Template
 				$fdata = ArrayData::create(array(
 					'Fields' => $fields,
@@ -54,7 +55,7 @@ class SubmittedFormPushoverExtension extends DataExtension
 				curl_setopt_array($ch = curl_init(), array(
 				  CURLOPT_URL => "https://api.pushover.net/1/messages.json",
 				  CURLOPT_POSTFIELDS => array(
-					"token" => $page->ApplicationKey,
+					"token" => Config::inst()->get('Pushover', 'application_key'),
 					"user" => $poend->UserKey,
 					"device" => $poend->DeviceNames,
 					"priority" => $pri,

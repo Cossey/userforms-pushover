@@ -16,7 +16,7 @@ class UserFormsPushoverExtension extends DataExtension
 	public function updateCMSFields(FieldList $fields)
     {
 		$fields->addFieldsToTab("Root.Recipients", array (
-			$POEndPoints = GridField::create('PushoverRecipients', 'Pushover Recipients', $this->owner->PushoverRecipients(), GridFieldConfig_RecordEditor::create())
+			$POEndPoints = GridField::create('PushoverRecipients', _t('UserDefinedForm.Pushover.PUSHOVERRCPT', 'Pushover Recipients'), $this->owner->PushoverRecipients(), GridFieldConfig_RecordEditor::create())
 		));
 		
 		return $fields; 

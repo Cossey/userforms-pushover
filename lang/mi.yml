@@ -1,0 +1,12 @@
+mi:
+  PushoverRecipient:
+    SINGULARNAME: 'Kaiwhiwhi Pushover'
+    PLURALNAME: 'Ngā Kaiwhiwhi Pushover'
+    USERKEY: 'Tohu muna'
+    DEVICENAMES: 'Ingoa pūrere'
+    DEVICENAMESINFO: 'Kōwae ngā ingoa purere he piko. Mēnā ki te tahanga te whiira, kite ngā ingoa purere.'
+    NPRIORITY: 'Hātepe whakātu'
+    TEMPLATE: 'Tauira Pushover'
+  UserDefinedForm:
+    Pushover:
+      PUSHOVERRCPT: 'Ngā Kaiwhiwhi Pushover'

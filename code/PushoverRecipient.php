@@ -38,11 +38,21 @@ class PushoverRecipient extends DataObject {
 	}
 	
 	private static $summary_fields = array (
-		'UserKey' => 'User Key',
-		'DeviceNames' => 'Devices',
-		'Priority' => 'Priority',
+		'UserKey',
+		'DeviceNames',
+		'Priority',
 	);
-
+	
+	public function fieldLabels($includerelations = true)
+	{
+		$labels = parent::fieldLabels(true);
+		
+		$labels['UserKey'] = _t('PushoverRecipient.USERKEY', 'User/Group Key');
+		$labels['DeviceNames'] = _t('PushoverRecipient.DEVICENAMES', 'Device Name(s)');
+		$labels['Priority'] = _t('PushoverRecipient.NPRIORITY', 'Notification Priority');
+		return $labels;
+	}
+		
 	private static $has_one = array(
 		'UserDefinedForm' => 'UserDefinedForm'
 	);
@@ -62,12 +72,12 @@ class PushoverRecipient extends DataObject {
 	public function getCMSFields() 
 	{
 		$fields = FieldList::create(
-			TextField::create('UserKey','User Key'),
-			$DevNames = TextField::create('DeviceNames','Devices'),
-			DropdownField::create('Priority', 'Notification Priority', $this->dbObject('Priority')->enumValues()),
-			DropdownField::create('PoTemplate', 'Pushover Template', $this->getPushoverTemplateDropdownValues())
+			TextField::create('UserKey', _t('PushoverRecipient.USERKEY', 'User/Group Key')),
+			$DevNames = TextField::create('DeviceNames', _t('PushoverRecipient.DEVICENAMES', 'Device Name(s)')),
+			DropdownField::create('Priority', _t('PushoverRecipient.NPRIORITY', 'Notification Priority'), $this->dbObject('Priority')->enumValues()),
+			DropdownField::create('PoTemplate', _t('PushoverRecipient.TEMPLATE', 'Pushover Template'), $this->getPushoverTemplateDropdownValues())
 		);
-		$DevNames->setRightTitle('Comma seperated list of device names. Leave blank for all devices.');
+		$DevNames->setRightTitle(_t('PushoverRecipient.DEVICENAMESINFO', 'Comma seperated list of device names. Leave empty for all devices.'));
 
 		return $fields;
 	}

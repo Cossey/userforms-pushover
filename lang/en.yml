@@ -1,0 +1,12 @@
+en:
+  PushoverRecipient:
+    SINGULARNAME: 'Pushover Recipient'
+    PLURALNAME: 'Pushover Recipients'
+    USERKEY: 'User/Group Key'
+    DEVICENAMES: 'Device Name(s)'
+    DEVICENAMESINFO: 'Comma seperated list of device names. Leave empty for all devices.'
+    NPRIORITY: 'Notification Priority'
+    TEMPLATE: 'Pushover Template'
+  UserDefinedForm:
+    Pushover:
+      PUSHOVERRCPT: 'Pushover Recipients'

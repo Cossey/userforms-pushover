@@ -16,3 +16,9 @@ $ composer require stewartcossey/userforms-pushover
 ```
 
 You will need to run `dev/build?flush=all` after installing this module.
+
+## Documentation
+
+- [User Guide](docs/en/userguide.md)
+- [Contributing Code](contributing.md)
+- [Code License](license.md)

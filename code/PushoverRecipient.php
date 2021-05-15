@@ -1,5 +1,21 @@
 <?php 
 
+namespace Cossey\UserForms;
+
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Assets\FileFinder;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\Core\Config\Config;
+use SilverStripe\UserForms\Model\UserDefinedForm;
+use SilverStripe\Core\Manifest\ModuleResourceLoader;
+use SilverStripe\CMS\Controllers\CMSMain;
+use SilverStripe\Control\Controller;
+use SilverStripe\UserForms\UserForm;
+
+use Serhiy\Pushover\Api\Message\Sound;
 /*
 * SilverStripe UserForms Pushover Extension
 * Stewart Cossey
@@ -8,33 +24,23 @@
 */
 class PushoverRecipient extends DataObject {
 
+	private static $table_name = 'UserDefinedForm_PORecipient';
+
 	private static $db = array(
 		'UserKey' => 'Varchar',
 		'DeviceNames' => 'Varchar',
 		'Priority' => "Enum('Lowest,Low,Normal,High,Emergency','Normal')",
 		'PoTemplate' => 'Varchar',
+		'Sound' => 'Varchar',
+		'PoTitle' => 'Varchar'
 	);
 	
 	public function populateDefaults() {
+		$parent = $this->getFormParent();
+
+		$this->Sound = ''; //Default
 		$this->Priority = 'Normal';
-		$this->PoTemplate = 'SubmittedFormPushover';
-		
-		switch (strtolower(Config::inst()->get('Pushover', 'priority')))
-		{
-			case 'lowest':
-			case 'low':
-			case 'normal':
-			case 'high':
-			case 'emergency':
-				$this->Priority = ucfirst(strtolower(Config::inst()->get('Pushover', 'priority')));
-				break;
-		}
-		
-		if (Config::inst()->get('Pushover', 'default_template'))
-		{
-			$this->PoTemplate = Config::inst()->get('Pushover', 'default_template');
-		}
-		
+		$this->PoTemplate = $parent->config()->get('pushover_default_template');
 	}
 	
 	private static $summary_fields = array (
@@ -47,14 +53,14 @@ class PushoverRecipient extends DataObject {
 	{
 		$labels = parent::fieldLabels(true);
 		
-		$labels['UserKey'] = _t('PushoverRecipient.USERKEY', 'User/Group Key');
-		$labels['DeviceNames'] = _t('PushoverRecipient.DEVICENAMES', 'Device Name(s)');
-		$labels['Priority'] = _t('PushoverRecipient.NPRIORITY', 'Notification Priority');
+		$labels['UserKey'] = _t('Cossey\\UserForms\\PushoverRecipient.USERKEY', 'USERKEY');
+		$labels['DeviceNames'] = _t('Cossey\\UserForms\\PushoverRecipient.DEVICENAMES', 'DEVICENAMES');
+		$labels['Priority'] = _t('Cossey\\UserForms\\PushoverRecipient.NPRIORITY', 'NPRIORITY');
 		return $labels;
 	}
 		
 	private static $has_one = array(
-		'UserDefinedForm' => 'UserDefinedForm'
+		'UserDefinedForm' => UserDefinedForm::class
 	);
 
 	//Show title as UserKey: DeviceNames
@@ -72,27 +78,96 @@ class PushoverRecipient extends DataObject {
 	public function getCMSFields() 
 	{
 		$fields = FieldList::create(
-			TextField::create('UserKey', _t('PushoverRecipient.USERKEY', 'User/Group Key')),
-			$DevNames = TextField::create('DeviceNames', _t('PushoverRecipient.DEVICENAMES', 'Device Name(s)')),
-			DropdownField::create('Priority', _t('PushoverRecipient.NPRIORITY', 'Notification Priority'), $this->dbObject('Priority')->enumValues()),
-			DropdownField::create('PoTemplate', _t('PushoverRecipient.TEMPLATE', 'Pushover Template'), $this->getPushoverTemplateDropdownValues())
+			TextField::create('UserKey', _t('Cossey\\UserForms\\PushoverRecipient.USERKEY', 'USERKEY')),
+			$DevNames = TextField::create('DeviceNames', _t('Cossey\\UserForms\\PushoverRecipient.DEVICENAMES', 'DEVICENAMES')),
+			TextField::create('PoTitle', _t('Cossey\\UserForms\\PushoverRecipient.NTITLE', 'NTITLE')),
+			DropdownField::create('Priority', _t('Cossey\\UserForms\\PushoverRecipient.NPRIORITY', 'NPRIORITY'), $this->dbObject('Priority')->enumValues()),
+			DropdownField::create('Sound', _t('Cossey\\UserForms\\PushoverRecipient.NSOUND', 'NSOUND'), $this->getPushoverSoundDropdownValues()),
+			DropdownField::create('PoTemplate', _t('Cossey\\UserForms\\PushoverRecipient.TEMPLATE', 'TEMPLATE'), $this->getPushoverTemplateDropdownValues())
 		);
-		$DevNames->setRightTitle(_t('PushoverRecipient.DEVICENAMESINFO', 'Comma seperated list of device names. Leave empty for all devices.'));
+		$DevNames->setRightTitle(_t('Cossey\\UserForms\\PushoverRecipient.DEVICENAMESINFO', 'DEVICENAMESINFO'));
 
 		return $fields;
+	}
+
+	/**
+     * Get instance of UserForm when editing in getCMSFields
+     *
+     * @return UserDefinedForm|UserForm|null
+     */
+    protected function getFormParent()
+    {
+        // If polymorphic relationship is actually defined, use it
+        if ($this->FormID && $this->FormClass) {
+            $formClass = $this->FormClass;
+            return $formClass::get()->byID($this->FormID);
+        }
+
+        // Revert to checking for a form from the session
+        // LeftAndMain::sessionNamespace is protected. @todo replace this with a non-deprecated equivalent.
+        $sessionNamespace = $this->config()->get('session_namespace') ?: CMSMain::class;
+
+        $formID = Controller::curr()->getRequest()->getSession()->get($sessionNamespace . '.currentPage');
+        if ($formID) {
+            return UserDefinedForm::get()->byID($formID);
+        }
+    }
+
+	public function getPushoverSoundDropdownValues()
+	{
+		$sounds = [];
+
+		$sounds[''] = _t('Cossey\\UserForms\\PushoverRecipient.DEFAULT', 'DEFAULT'); //Set default sound
+
+		foreach(Sound::getAvailableSounds() as $snd) {
+			$sounds[$snd] = $snd;
+		}
+
+		return $sounds;
 	}
 
 	//Gets a list of Pushover SilverStripe templates for Dropdowns
 	public function getPushoverTemplateDropdownValues()
 	{
-		$templates = array();
-		$finder = new SS_FileFinder();
+		$templates = [];
+
+		$finder = new FileFinder();
 		$finder->setOption('name_regex', '/^.*\.ss$/');
-		$found = $finder->find(BASE_PATH . '/userforms-pushover/templates/pushover');
+
+        $parent = $this->getFormParent();
+		
+        if (!$parent) {
+            return [];
+        }
+
+        $pushoverTemplateDirectory = $parent->config()->get('pushover_template_directory');
+        $templateDirectory = ModuleResourceLoader::resourcePath($pushoverTemplateDirectory);
+
+        if (!$templateDirectory) {
+			return [];
+        }
+		
+        $found = $finder->find(BASE_PATH . DIRECTORY_SEPARATOR . $templateDirectory);
 
 		foreach ($found as $key => $value) {
-            $template = pathinfo($value);
-            $templates[$template['filename']] = $template['filename'];
+			$template = pathinfo($value);
+            $absoluteFilename = $template['dirname'] . DIRECTORY_SEPARATOR . $template['filename'];
+
+            // Optionally remove vendor/ path prefixes
+            $resource = ModuleResourceLoader::singleton()->resolveResource($templateDirectory);
+            if ($resource instanceof ModuleResource && $resource->getModule()) {
+                $prefixToStrip = $resource->getModule()->getPath();
+            } else {
+                $prefixToStrip = BASE_PATH;
+            }
+            $templatePath = substr($absoluteFilename, strlen($prefixToStrip) + 1);
+
+            // Optionally remove "templates/" prefixes
+            if (preg_match('/(?<=templates\/).*$/', $templatePath, $matches)) {
+                $templatePath = $matches[0];
+            }
+
+            $templates[$templatePath] = $template['filename'];
         }
         return $templates;
 	}

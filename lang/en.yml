@@ -1,5 +1,5 @@
 en:
-  PushoverRecipient:
+  Cossey\UserForms\PushoverRecipient:
     SINGULARNAME: 'Pushover Recipient'
     PLURALNAME: 'Pushover Recipients'
     USERKEY: 'User/Group Key'
@@ -7,6 +7,8 @@ en:
     DEVICENAMESINFO: 'Comma seperated list of device names. Leave empty for all devices.'
     NPRIORITY: 'Notification Priority'
     TEMPLATE: 'Pushover Template'
-  UserDefinedForm:
-    Pushover:
-      PUSHOVERRCPT: 'Pushover Recipients'
+    NTITLE: 'Notification Title'
+    NSOUND: 'Notification Sound'
+    DEFAULT: '<Default>'
+  SilverStripe\UserForms\Model\UserDefinedForm:
+    PUSHOVERRCPT: 'Pushover Recipients'

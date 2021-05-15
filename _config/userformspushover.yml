@@ -1,11 +1,13 @@
 ---
-Name: userformspushover
+Name: userforms-pushover
+After: '#userformsconfig'
 Only:
   ModuleExists: userforms
 ---
-UserDefinedForm:
+SilverStripe\UserForms\Model\UserDefinedForm:
   extensions:
-    - UserFormsPushoverExtension
-SubmittedForm:
+    - Cossey\UserForms\UserFormsPushoverExtension
+
+SilverStripe\UserForms\Model\Submission\SubmittedForm:
   extensions:
-    - SubmittedFormPushoverExtension
+    - Cossey\UserForms\SubmittedFormPushoverExtension

@@ -1,7 +1,7 @@
 # UserForms Pushover
 
-[![Packagist](https://img.shields.io/packagist/v/stewartcossey/userforms-pushover.svg)]()
-[![license](https://img.shields.io/github/license/Cossey/userforms-pushover.svg)]()
+[![Packagist](https://img.shields.io/packagist/v/stewartcossey/userforms-pushover.svg)](https://packagist.org/packages/stewartcossey/userforms-pushover)
+[![license](https://img.shields.io/github/license/Cossey/userforms-pushover.svg)](license.md)
 
 Extends the UserForms module to add support for sending notifications over [Pushover.net](http://www.pushover.net).
 
